@@ -1,6 +1,7 @@
 package ru.gb.springdemo.repository;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Data;
 import org.springframework.stereotype.Repository;
 import ru.gb.springdemo.model.Book;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Data
 public class BookRepository {
 
   private final List<Book> books;

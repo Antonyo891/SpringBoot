@@ -4,15 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.springdemo.model.Book;
 import ru.gb.springdemo.service.BookService;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/book")
 public class BookController {
     @Autowired
@@ -30,6 +33,39 @@ public class BookController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(findBook);
     }
+
+    @GetMapping(path = "/th/{bookId}")
+    public String bookInfoThymeleaf(@PathVariable("bookId") long bookId, Model model){
+        log.info("Thymeleaf: Получен запрос на описание книги bookId = {}",bookId);
+        Book findBook;
+        try {
+            findBook = bookService.bookInfo(bookId);
+            model.addAttribute("name",findBook.getName());
+            model.addAttribute("bookId",findBook.getId());
+        } catch (NoSuchElementException e){
+            model.addAttribute("name", "not found");
+            model.addAttribute("bookId", "not found");
+        }
+        return "book";
+    }
+
+    @GetMapping(path = "/th/books/list")
+    public String booksListThymeleaf(Model model){
+        log.info("Thymeleaf: Получен запрос на список книг");
+        List<Book> books = bookService.getBookRepository().getBooks();
+        List<String> booksName = books.stream().map(Book::getName).toList();
+        model.addAttribute("books",booksName);
+        return "listOfBook";
+    }
+    @GetMapping(path = "/th/books/table")
+    public String booksTableThymeleaf(Model model){
+        log.info("Thymeleaf: Получен запрос на таблицу книг");
+        List<Book> books = bookService.getBookRepository().getBooks();
+        log.info("Thymeleaf:{}", books);
+        model.addAttribute("books",books);
+        return "tableOfBook";
+    }
+
     @DeleteMapping(path = "/delete/{bookId}")
     @ResponseBody
     public ResponseEntity<Book> deleteBook(@PathVariable("bookId") long bookId){
