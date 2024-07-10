@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.gb.springdemo.model.Book;
+import ru.gb.springdemo.model.Reader;
+import ru.gb.springdemo.model.ReaderCard;
 import ru.gb.springdemo.repository.BookRepository;
+import ru.gb.springdemo.repository.ReaderRepository;
 
 import java.util.NoSuchElementException;
 
@@ -16,6 +19,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
+    private final ReaderRepository readerRepository;
 
     public Book bookInfo(long bookId){
         if (bookRepository.getBookById(bookId)==null){
@@ -32,6 +36,8 @@ public class BookService {
         bookRepository.deleteBook(tempBook);
         return tempBook;
     }
+
+
 
     public Book addBook(String name){
        return bookRepository.addBook(new Book(name));

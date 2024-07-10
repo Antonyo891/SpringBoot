@@ -1,18 +1,18 @@
 package ru.gb.springdemo.service;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.gb.springdemo.model.IssueRequest;
-import ru.gb.springdemo.model.Issue;
+import ru.gb.springdemo.model.*;
 import ru.gb.springdemo.repository.BookRepository;
 import ru.gb.springdemo.repository.IssueRepository;
 import ru.gb.springdemo.repository.ReaderRepository;
 
-import java.util.NoSuchElementException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -25,6 +25,7 @@ public class IssuerService {
   // спринг это все заинжектит
   private final BookRepository bookRepository;
   private final ReaderRepository readerRepository;
+  private final ReaderService readerService;
   private final IssueRepository issueRepository;
 
 
@@ -60,4 +61,29 @@ public class IssuerService {
     return issue;
   }
 
+  public ReaderCard returnBook(ReturnRequest returnRequest) {
+    Issue issue = issueRepository.getIssueById(returnRequest.getIssueId());
+    if (issue==null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+              "Не найдена запись о выдаче книги с идентификатором \"" + returnRequest.getIssueId() + "\"");
+    }
+    if (issue.getTimeOfReturn()!=null)
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+            "Книгу уже вернули \"" + returnRequest.getBookId() + "\"");
+    issue.setTimeOfReturn(LocalDateTime.now().withNano(0));
+    return getReaderCardById(issue.getReaderId());
+  }
+
+  public ReaderCard getReaderCardById(long readerId){
+    Reader reader = readerService.ReaderInfo(readerId);
+    ReaderCard readerCard = new ReaderCard();
+    readerCard.setReader(reader);
+    readerCard.setRemainingBooks(readerService.allReadersBook(readerId));
+    return readerCard;
+  }
+
+
+  public List<Issue> getIssues() {
+    return issueRepository.getIssues();
+  }
 }

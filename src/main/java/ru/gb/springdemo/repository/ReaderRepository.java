@@ -1,15 +1,18 @@
 package ru.gb.springdemo.repository;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Data;
 import org.springframework.stereotype.Repository;
 import ru.gb.springdemo.model.Book;
 import ru.gb.springdemo.model.Reader;
+import ru.gb.springdemo.model.ReaderCard;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Data
 public class ReaderRepository {
 
   private final List<Reader> readers;

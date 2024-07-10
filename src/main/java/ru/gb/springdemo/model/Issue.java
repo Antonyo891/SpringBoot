@@ -20,13 +20,15 @@ public class Issue {
   /**
    * Дата выдачи
    */
-  private final LocalDateTime timestamp;
+  private final LocalDateTime timeOfReceipt;
+  private LocalDateTime timeOfReturn;
 
   public Issue(long bookId, long readerId) {
     this.id = sequence++;
     this.bookId = bookId;
     this.readerId = readerId;
-    this.timestamp = LocalDateTime.now().minusNanos(0);
+    this.timeOfReceipt = LocalDateTime.now().withNano(0);
+    this.timeOfReturn = null;
   }
 
 }

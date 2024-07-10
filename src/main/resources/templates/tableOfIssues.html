@@ -5,18 +5,22 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Table of books</title>
+    <title>Issues</title>
 </head>
 <body>
-<h1>Books</h1><br>
+<h1>Issues</h1><br>
 <table>
     <tr>
-        <th>Id</th>
-        <th>Name</th>
+        <th>№ </th>
+        <th>Book name</th>
+        <th>   Time of receipt   </th>
+        <th>    Time of return   </th>
     </tr>
-    <tr th:each="book: ${remainingBooks}">
-        <td th:text="${book.getId()}"> </td>
+    <tr th:each="entry, stats: ${map}" th:with="book=${entry.value}">
+        <td th:text="${stats.index+1}"> 1 </td>
         <td th:text="${book.getName()}"> </td>
+        <td th:text="${entry.key.getTimeOfReceipt()}"> </td>
+        <td th:text="${entry.key.getTimeOfReturn()}"> </td>
     </tr>
 </table>
 </body>
