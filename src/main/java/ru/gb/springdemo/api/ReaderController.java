@@ -25,12 +25,7 @@ public class ReaderController {
     @ResponseBody
     public ResponseEntity<Reader> readerInfo(@PathVariable("readerId") long readerId){
         log.info("Получен запрос на описание читателя readerId = {}",readerId);
-        Reader findReader;
-        try {
-            findReader = readerService.ReaderInfo(readerId);
-        } catch (NoSuchElementException e){
-            return ResponseEntity.notFound().build();
-        }
+        Reader findReader = readerService.ReaderInfo(readerId);
         return ResponseEntity.status(HttpStatus.OK).body(findReader);
     }
     @GetMapping(path = "/{readerId}/issue")
@@ -44,14 +39,8 @@ public class ReaderController {
     @ResponseBody
     public ResponseEntity<Reader> deleteReader(@PathVariable("readerId") long readerId){
         log.info("Получен запрос на удаление читателя readerId = {}",readerId);
-        Reader deleteReader;
-        try {
-            deleteReader = readerService.deleteReaderById(readerId);
-            log.info("Читатель {} удален.",deleteReader);
-        } catch (NoSuchElementException e){
-            log.info("Читатель readerId = {} отсутствует в базе.",readerId);
-            return ResponseEntity.notFound().build();
-        }
+        Reader deleteReader = readerService.deleteReaderById(readerId);
+        log.info("Читатель {} удален.",deleteReader);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .header("Delete","Reader with id "+readerId)
                 .body(deleteReader);
@@ -59,9 +48,6 @@ public class ReaderController {
     @PostMapping
     public ResponseEntity<Reader> addReader(@RequestBody Reader reader){
         log.info("Получен запрос на добавление читателя {}",reader.getName());
-        if (reader.getName()==null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .build();
         Reader addReader = readerService.addReader(reader.getName());
         return  ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(addReader);

@@ -28,18 +28,7 @@ public class IssuerController {
   @PostMapping
   public ResponseEntity<Issue> issueBook(@RequestBody IssueRequest request) {
     log.info("Получен запрос на выдачу: readerId = {}, bookId = {}", request.getReaderId(), request.getBookId());
-
-    final Issue issue;
-    try {
-      issue = service.issue(request);
-    } catch (NoSuchElementException e) {
-      log.info(e.getMessage());
-      return ResponseEntity.notFound().build();
-    } catch (BadRequestException e){
-      log.info(e.getMessage());
-      return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    }
-
+    final Issue issue = service.issue(request);
     return ResponseEntity.status(HttpStatus.OK).body(issue);
   }
 
@@ -47,15 +36,8 @@ public class IssuerController {
   @ResponseBody
   public ResponseEntity<Issue> issueInfo(@PathVariable("issuerId") long issuerId){
     log.info("Получен запрос на просмотр записи issueId = {}\"",issuerId);
-    Issue findIssue;
-    try {
-      findIssue = service.issueInfo(issuerId);
-      log.info("Запрос на просмотр записи issueId = {} о выдаче книги  успешно обработан\"",issuerId);
-
-    } catch (NoSuchElementException e){
-      log.info(e.getMessage());
-      return ResponseEntity.notFound().build();
-    }
+    Issue findIssue = service.issueInfo(issuerId);
+    log.info("Запрос на просмотр записи issueId = {} о выдаче книги  успешно обработан\"",issuerId);
     return ResponseEntity.status(HttpStatus.OK).body(findIssue);
   }
 

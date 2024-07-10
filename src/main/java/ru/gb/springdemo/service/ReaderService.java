@@ -1,7 +1,9 @@
 package ru.gb.springdemo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.gb.springdemo.model.Issue;
 import ru.gb.springdemo.model.Reader;
 import ru.gb.springdemo.repository.IssueRepository;
@@ -20,24 +22,32 @@ public class ReaderService {
 
     public Reader ReaderInfo(long readerId){
         if (readerRepository.getReaderById(readerId)==null){
-            throw new NoSuchElementException("Нет читателя с идентифекатором \""+ readerId + "\"");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Нет читателя с идентифекатором \""+ readerId + "\"");
         }
         return readerRepository.getReaderById(readerId);
     }
-    public Reader deleteReaderById(long bookId) {
-        Reader tempReader = readerRepository.getReaderById(bookId);
+    public Reader deleteReaderById(long readerId) {
+        Reader tempReader = readerRepository.getReaderById(readerId);
         if (tempReader == null)
-            throw new NoSuchElementException("Нет читателя с идентифекатором \""+ bookId + "\"");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Нет читателя с идентифекатором \""+ readerId + "\"");
         readerRepository.deleteReader(tempReader);
         return tempReader;
     }
 
     public Reader addReader(String name){
+        if (name==null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Имя не должно быть 'null'");
        return readerRepository.addReader(new Reader(name));
     }
     public List<Issue> allReadersIssue(long readerId){
-        return issueRepository.getIssues().stream()
+        List<Issue> readersIssue= issueRepository.getIssues().stream()
                 .filter(i-> Objects.equals(i.getReaderId(),readerId))
                 .collect(Collectors.toList());
+        if (readersIssue==null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Нет читателя с идентифекатором \""+ readerId + "\"");
+        return readersIssue;
     }
 }

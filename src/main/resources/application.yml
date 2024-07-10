@@ -1,2 +1,7 @@
 application:
   max-allowed-books: 2
+  server:
+    error:
+      include-stacktrace: never
+      include-message: always
+      include-binding-errors: always

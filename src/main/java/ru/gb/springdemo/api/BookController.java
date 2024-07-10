@@ -25,27 +25,16 @@ public class BookController {
     @ResponseBody
     public ResponseEntity<Book> bookInfo(@PathVariable("bookId") long bookId){
         log.info("Получен запрос на описание книги bookId = {}",bookId);
-        Book findBook;
-        try {
-            findBook = bookService.bookInfo(bookId);
-        } catch (NoSuchElementException e){
-            return ResponseEntity.notFound().build();
-        }
+        Book findBook = bookService.bookInfo(bookId);
         return ResponseEntity.status(HttpStatus.OK).body(findBook);
     }
 
     @GetMapping(path = "/th/{bookId}")
     public String bookInfoThymeleaf(@PathVariable("bookId") long bookId, Model model){
         log.info("Thymeleaf: Получен запрос на описание книги bookId = {}",bookId);
-        Book findBook;
-        try {
-            findBook = bookService.bookInfo(bookId);
-            model.addAttribute("name",findBook.getName());
-            model.addAttribute("bookId",findBook.getId());
-        } catch (NoSuchElementException e){
-            model.addAttribute("name", "not found");
-            model.addAttribute("bookId", "not found");
-        }
+        Book findBook = bookService.bookInfo(bookId);
+        model.addAttribute("name",findBook.getName());
+        model.addAttribute("bookId",findBook.getId());
         return "book";
     }
 
@@ -70,14 +59,8 @@ public class BookController {
     @ResponseBody
     public ResponseEntity<Book> deleteBook(@PathVariable("bookId") long bookId){
         log.info("Получен запрос на удаление книги bookId = {}",bookId);
-        Book deleteBook;
-        try {
-            deleteBook = bookService.deleteBookById(bookId);
-            log.info("Книга {} удалена.",deleteBook);
-        } catch (NoSuchElementException e){
-            log.info("Книга bookId = {} отсутствует в библиотеке.",bookId);
-            return ResponseEntity.notFound().build();
-        }
+        Book deleteBook = bookService.deleteBookById(bookId);
+        log.info("Книга {} удалена.",deleteBook);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .header("Delete","Book with id "+bookId)
                 .body(deleteBook);
