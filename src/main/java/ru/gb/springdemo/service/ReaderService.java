@@ -12,8 +12,8 @@ import ru.gb.springdemo.repository.IssueRepository;
 import ru.gb.springdemo.repository.ReaderRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,45 +24,46 @@ public class ReaderService {
     private final BookRepository bookRepository;
 
     public Reader ReaderInfo(long readerId){
-        if (readerRepository.getReaderById(readerId)==null){
+        if (readerRepository.findById(readerId).orElse(null)==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Нет читателя с идентифекатором \""+ readerId + "\"");
         }
-        return readerRepository.getReaderById(readerId);
+        return readerRepository.findById(readerId).orElse(null);
     }
     public Reader deleteReaderById(long readerId) {
-        Reader tempReader = readerRepository.getReaderById(readerId);
+        Reader tempReader = readerRepository.findById(readerId).orElse(null);
         if (tempReader == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Нет читателя с идентифекатором \""+ readerId + "\"");
-        readerRepository.deleteReader(tempReader);
+        readerRepository.delete(tempReader);
         return tempReader;
     }
 
-    public Reader addReader(String name){
-        if (name==null)
+    public Reader addReader(Reader reader){
+        if ((reader==null)||(reader.getName()==null))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Имя не должно быть 'null'");
-       return readerRepository.addReader(new Reader(name));
+        readerRepository.save(reader);
+        return reader;
     }
     public List<Issue> allReadersIssue(long readerId){
-        List<Issue> readersIssue= issueRepository.getIssues().stream()
-                .filter(i-> Objects.equals(i.getReaderId(),readerId))
-                .filter(i->i.getTimeOfReturn()==null)
-                .collect(Collectors.toList());
-        if (readersIssue==null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Нет читателя с идентифекатором \""+ readerId + "\"");
+        if (readerRepository.findById(readerId).orElse(null)==null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Нет читателя с идентифекатором \""+ readerId + "\"");
+        List<Issue> readersIssue = issueRepository.findAll().stream()
+                .filter(i->(i.getTimeOfReturn()==null &&
+                        Objects.equals(i.getReaderId(),readerId))).toList();
+        if ((readersIssue==null)||(readersIssue.isEmpty())) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "У читателя нет книг на руках");
         return readersIssue;
     }
     public List<Book> allReadersBook(long readerId){
-        List<Issue> issues = allReadersIssue(readerId);
-        return issues.stream()
-                .map(Issue::getBookId)
-                .map(bookRepository::getBookById)
-                .toList();
+        List<Long> bookId = allReadersIssue(readerId).stream()
+                .map(Issue::getBookId).toList();
+        return bookId.stream().map(s->bookRepository.findById(s).orElse(null)).toList();
     }
 
     public List<Reader> allReader() {
-        return readerRepository.getReaders();
+        return readerRepository.findAll();
     }
 }

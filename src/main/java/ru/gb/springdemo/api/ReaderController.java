@@ -7,14 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.springdemo.model.Book;
 import ru.gb.springdemo.model.Issue;
 import ru.gb.springdemo.model.Reader;
 import ru.gb.springdemo.service.ReaderService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Slf4j
@@ -25,11 +23,10 @@ public class ReaderController {
     private ReaderService readerService;
 
     @GetMapping(path = "/{readerId}")
-    @ResponseBody
-    public ResponseEntity<Reader> readerInfo(@PathVariable("readerId") long readerId){
+    public String readerInfo(@PathVariable("readerId") long readerId,Model model){
         log.info("Получен запрос на описание читателя readerId = {}",readerId);
-        Reader findReader = readerService.ReaderInfo(readerId);
-        return ResponseEntity.status(HttpStatus.OK).body(findReader);
+        model.addAttribute("reader",readerService.ReaderInfo(readerId));
+        return "reader";
     }
     @GetMapping(path = "/{readerId}/issue")
     @ResponseBody
@@ -38,7 +35,7 @@ public class ReaderController {
         List<Issue> readersIssues = new ArrayList<>();
         return ResponseEntity.status(HttpStatus.OK).body(readerService.allReadersIssue(readerId));
     }
-    @GetMapping(path = "/th/readers")
+    @GetMapping(path = "readers")
     public String readersTableThymeleaf(Model model){
         log.info("Thymeleaf: Получен запрос на таблицу читателей");
         List<Reader> readers = readerService.allReader();
@@ -58,12 +55,10 @@ public class ReaderController {
                 .body(deleteReader);
     }
     @PostMapping
-    @ResponseBody
-    public ResponseEntity<Reader> addReader(@RequestBody Reader reader){
+    public String addReader(@RequestBody Reader reader, Model model){
         log.info("Получен запрос на добавление читателя {}",reader.getName());
-        Reader addReader = readerService.addReader(reader.getName());
-        return  ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(addReader);
+        model.addAttribute("reader",readerService.addReader(reader));
+        return  "reader";
     }
 
 }

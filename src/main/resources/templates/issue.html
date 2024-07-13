@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Issue</title>
+</head>
+<body>
+<h1> Запись о получении книги:</h1>
+<h2> Идентификатор: <span th:text="${issue.getId()}"></span></h2>
+<h2> Имя книги:<span th:text="${book.getName()}"></span></h2>
+<h2> Идентификатор книги:<span th:text="${issue.getBookId()}"></span></h2>
+<h2> Идентификатор читателя:<span th:text="${issue.getReaderId()}"></span></h2>
+<h2> Имя читателя:<span th:text="${reader.getName()}"></span></h2>
+<h2> Время выдачи:<span th:text="${issue.getTimeOfReceipt()}"></span></h2>
+<h2> Время возврата:<span th:text="${reader.getTimeOfReturn()}"></span></h2>
+</body>
+</html>

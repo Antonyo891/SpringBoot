@@ -5,19 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Table of books</title>
+    <title>Reader</title>
 </head>
 <body>
-<h1>Books</h1><br>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-    </tr>
-    <tr th:each="book: ${books}">
-        <td th:text="${book.getId()}"> </td>
-        <td th:text="${book.getName()}"> </td>
-    </tr>
-</table>
+<h1> Читатель:</h1>
+<h2> Имя: <span th:text="${reader.getName()}"></span></h2>
+<h2> Идентификатор:<span th:text="${reader.getId()}"></span></h2>
 </body>
 </html>
