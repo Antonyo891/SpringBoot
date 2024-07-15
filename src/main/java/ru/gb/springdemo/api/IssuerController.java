@@ -1,5 +1,6 @@
 package ru.gb.springdemo.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class IssuerController {
   @Autowired
   private ReaderRepository readerRepository;
 
+    /**
+     * Возврат книги в библиотеку
+     * @param returnRequest - запрос на возврат книги
+     * @param model
+     * @return
+     */
   @PutMapping
   public String returnBook(@RequestBody ReturnRequest returnRequest,Model model) {
     // найти в репозитории выдачу и проставить ей returned_at
@@ -56,6 +63,7 @@ public class IssuerController {
 
   @PostMapping
   @ResponseBody
+  @Operation(summary = "запрос на выдачу книги", description = "формирует запись о выданной книге")
   public ResponseEntity<Issue> issueBook(@RequestBody IssueRequest request) {
     log.info("Получен запрос на выдачу: readerId = {}, bookId = {}", request.getReaderId(), request.getBookId());
     ;

@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.gb.springdemo.ReaderProperties;
 import ru.gb.springdemo.model.*;
 import ru.gb.springdemo.repository.BookRepository;
 import ru.gb.springdemo.repository.IssueRepository;
@@ -20,10 +22,11 @@ import java.util.Objects;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@EnableConfigurationProperties(ReaderProperties.class)
 public class IssuerService {
 
-  @Value("${application.max-allowed-books:2}")
-  private int maxNumberOfTheBook;
+//  @Value("${application.max-allowed-books:2}")
+//  private int maxNumberOfTheBook;
 
   // спринг это все заинжектит
   @Autowired
@@ -34,6 +37,8 @@ public class IssuerService {
   private final ReaderService readerService;
   @Autowired
   private final IssueRepository issueRepository;
+  @Autowired
+  private ReaderProperties readerProperties;
 
 
   public Issue issue(IssueRequest request) {
@@ -53,7 +58,7 @@ public class IssuerService {
             .filter(i->(i.getTimeOfReturn()==null &&
                     Objects.equals(i.getReaderId(),request.getReaderId()))).count();
     log.info("Количество книг на руках = {}",numberOfReadersBook);
-    if (numberOfReadersBook>=maxNumberOfTheBook){
+    if (numberOfReadersBook>=readerProperties.getMaxAllowedBooks()){
       throw new ResponseStatusException(HttpStatus.CONFLICT,
               "Слишком много книг (" + numberOfReadersBook +
                       ") для читателя readerId = \"" +request.getReaderId() + "\"");
