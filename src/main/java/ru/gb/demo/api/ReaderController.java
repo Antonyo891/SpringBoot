@@ -1,4 +1,4 @@
-package ru.gb.springdemo.api;
+package ru.gb.demo.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.springdemo.model.Issue;
-import ru.gb.springdemo.model.Reader;
-import ru.gb.springdemo.service.ReaderService;
+import ru.gb.demo.aspect.TimeLog;
+import ru.gb.demo.model.Issue;
+import ru.gb.demo.model.Reader;
+import ru.gb.demo.service.ReaderService;
 
 import java.util.ArrayList;
 import java.util.List;

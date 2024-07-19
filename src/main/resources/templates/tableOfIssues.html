@@ -12,6 +12,7 @@
 <table>
     <tr>
         <th>№ </th>
+        <th>Issue Id</th>
         <th>Book name</th>
         <th>Reader ID</th>
         <th>   Time of receipt   </th>
@@ -19,6 +20,7 @@
     </tr>
     <tr th:each="entry, stats: ${map}" th:with="book=${entry.value}">
         <td th:text="${stats.index+1}"> 1 </td>
+        <td th:text="${entry.key.getId()}"> </td>
         <td th:text="${book.getName()}"> </td>
         <td th:text="${entry.key.getReaderId()}"> </td>
         <td th:text="${entry.key.getTimeOfReceipt()}"> </td>

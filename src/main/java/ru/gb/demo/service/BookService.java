@@ -1,4 +1,4 @@
-package ru.gb.springdemo.service;
+package ru.gb.demo.service;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.gb.springdemo.model.Book;
-import ru.gb.springdemo.repository.BookRepository;
-import ru.gb.springdemo.repository.ReaderRepository;
+import ru.gb.demo.aspect.TimeLog;
+import ru.gb.demo.model.Book;
+import ru.gb.demo.repository.BookRepository;
+import ru.gb.demo.repository.ReaderRepository;
 
 import java.util.List;
 
 @Service
 @Data
 @RequiredArgsConstructor
+@TimeLog
 public class BookService {
     @Autowired
     private final BookRepository bookRepository;
@@ -45,7 +47,6 @@ public class BookService {
         bookRepository.save(book);
        return book;
     }
-
     public List<Book> getBooks() {
         return bookRepository.findAll();
     }

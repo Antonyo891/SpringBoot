@@ -1,4 +1,4 @@
-package ru.gb.springdemo.model;
+package ru.gb.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

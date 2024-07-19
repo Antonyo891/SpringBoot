@@ -1,23 +1,23 @@
-package ru.gb.springdemo.service;
+package ru.gb.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.gb.springdemo.model.Book;
-import ru.gb.springdemo.model.Issue;
-import ru.gb.springdemo.model.Reader;
-import ru.gb.springdemo.repository.BookRepository;
-import ru.gb.springdemo.repository.IssueRepository;
-import ru.gb.springdemo.repository.ReaderRepository;
+import ru.gb.demo.aspect.TimeLog;
+import ru.gb.demo.model.Book;
+import ru.gb.demo.model.Issue;
+import ru.gb.demo.model.Reader;
+import ru.gb.demo.repository.BookRepository;
+import ru.gb.demo.repository.IssueRepository;
+import ru.gb.demo.repository.ReaderRepository;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@TimeLog
 public class ReaderService {
     private final ReaderRepository readerRepository;
     private final IssueRepository issueRepository;

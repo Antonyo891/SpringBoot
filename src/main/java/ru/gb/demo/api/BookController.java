@@ -1,4 +1,4 @@
-package ru.gb.springdemo.api;
+package ru.gb.demo.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.springdemo.model.Book;
-import ru.gb.springdemo.service.BookService;
+import ru.gb.demo.aspect.TimeLog;
+import ru.gb.demo.model.Book;
+import ru.gb.demo.service.BookService;
 
 import java.util.List;
 
@@ -20,13 +21,13 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-//    @GetMapping(path = "/{bookId}")
-//    @ResponseBody
-//    public ResponseEntity<Book> bookInfo(@PathVariable("bookId") long bookId){
-//        log.info("Получен запрос на описание книги bookId = {}",bookId);
-//        Book findBook = bookService.bookInfo(bookId);
-//        return ResponseEntity.status(HttpStatus.OK).body(findBook);
-//    }
+    @GetMapping(path = "entity/{bookId}")
+    @ResponseBody
+    public ResponseEntity<Book> bookInfo(@PathVariable("bookId") long bookId){
+        log.info("Получен запрос на описание книги bookId = {}",bookId);
+        Book findBook = bookService.bookInfo(bookId);
+        return ResponseEntity.status(HttpStatus.OK).body(findBook);
+    }
 
     @GetMapping(path = "{bookId}")
     public String bookInfoThymeleaf(@PathVariable("bookId") long bookId, Model model){

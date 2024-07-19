@@ -1,19 +1,18 @@
-package ru.gb.springdemo.service;
+package ru.gb.demo.service;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.gb.springdemo.ReaderProperties;
-import ru.gb.springdemo.model.*;
-import ru.gb.springdemo.repository.BookRepository;
-import ru.gb.springdemo.repository.IssueRepository;
-import ru.gb.springdemo.repository.ReaderRepository;
+import ru.gb.demo.ReaderProperties;
+import ru.gb.demo.aspect.TimeLog;
+import ru.gb.demo.model.*;
+import ru.gb.demo.repository.BookRepository;
+import ru.gb.demo.repository.IssueRepository;
+import ru.gb.demo.repository.ReaderRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +39,7 @@ public class IssuerService {
   @Autowired
   private ReaderProperties readerProperties;
 
-
+  @TimeLog
   public Issue issue(IssueRequest request) {
     Book book = bookRepository.findById(request.getBookId()).orElse(null);
     if (book == null) {
@@ -90,6 +89,7 @@ public class IssuerService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
             "Книгу уже вернули \"" + returnRequest.getBookId() + "\"");
     issue.setTimeOfReturn(LocalDateTime.now().withNano(0));
+    issueRepository.flush();
     return getReaderCardById(issue.getReaderId());
   }
 

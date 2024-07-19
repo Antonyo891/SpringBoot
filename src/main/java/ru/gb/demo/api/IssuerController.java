@@ -1,4 +1,4 @@
-package ru.gb.springdemo.api;
+package ru.gb.demo.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.springdemo.model.Book;
-import ru.gb.springdemo.model.*;
-import ru.gb.springdemo.repository.BookRepository;
-import ru.gb.springdemo.repository.ReaderRepository;
-import ru.gb.springdemo.service.IssuerService;
+import ru.gb.demo.aspect.TimeLog;
+import ru.gb.demo.model.Book;
+import ru.gb.demo.model.*;
+import ru.gb.demo.repository.BookRepository;
+import ru.gb.demo.repository.ReaderRepository;
+import ru.gb.demo.service.IssuerService;
 
 import java.util.HashMap;
 import java.util.List;
