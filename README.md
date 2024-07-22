@@ -13,8 +13,8 @@
 
 Решение: создать стартер, который будет инкапсулировать в себе аспект и его автоматический импорт в подключающий проект.
 То есть:
-1. Пишем стартер, в котором задекларирован аспект и его работа
-2. Подключаем стартер в reader-service, book-service, issue-service, ...
+1. [Пишем стартер, в котором задекларирован аспект и его работа](https://github.com/Antonyo891/SpringBoot/tree/seminar_eleven/starter)
+2. Подключаем стартер в [reader-service](https://github.com/Antonyo891/SpringBoot/blob/seminar_eleven/readers-client/pom.xml), [book-service](https://github.com/Antonyo891/SpringBoot/blob/seminar_eleven/books-client/pom.xml), [issue-service](https://github.com/Antonyo891/SpringBoot/blob/seminar_eleven/issues-client/pom.xml), ...
 
 Шаги реализации:
 1. Создаем новый модуль в микросервисном проекте - это и будет наш стартер
