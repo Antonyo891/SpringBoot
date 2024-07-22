@@ -2,8 +2,10 @@
   <summary>9 семинар дз:</summary> <br> 
   1.Восстановить пример, рассмотренный на уроке (запустить эврику и 2 сервиса; заставить их взаимодействовать)
 Сдать скриншот страницы /eureka/apps с зарегистрированными приложениями.
-На скрине должно быть видно оба сервиса (book-service, issuer-service)
-![screen](https://github.com/Antonyo891/SpringBoot/blob/seminar_eleven/src/main/resources/Eureka.png) 
+На скрине должно быть видно оба сервиса (book-service, issuer-service) <br>
+  
+![screen](https://github.com/Antonyo891/SpringBoot/blob/seminar_eleven/src/main/resources/Eureka.png)
+  
 </details> <br> 
 <details>
   <summary> 11 семинар дз:</summary> Проблематика: имеется несколько микросервисов (проектов) на spring-boot: reader-service, book-service, issue-service, ...
