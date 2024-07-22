@@ -3,7 +3,8 @@
   1.Восстановить пример, рассмотренный на уроке (запустить эврику и 2 сервиса; заставить их взаимодействовать)
 Сдать скриншот страницы /eureka/apps с зарегистрированными приложениями.
 На скрине должно быть видно оба сервиса (book-service, issuer-service)
-![]() </details> <br> 
+![screen](https://github.com/Antonyo891/SpringBoot/blob/seminar_eleven/src/main/resources/Eureka.png) 
+</details> <br> 
 <details>
   <summary> 11 семинар дз:</summary> Проблематика: имеется несколько микросервисов (проектов) на spring-boot: reader-service, book-service, issue-service, ...
 Хочется, чтобы в каждом из этих проектов работал аспект-таймер, замеряющий время выполнения метода бина, помеченного аннотацией @Timer (см. дз к уроку 8)
