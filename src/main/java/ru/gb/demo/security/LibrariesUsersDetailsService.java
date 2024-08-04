@@ -19,7 +19,7 @@ public class LibrariesUsersDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ru.gb.demo.model.User user = userService.findUser(username);
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role->new SimpleGrantedAuthority(role.toString()))
+                .map(role->new SimpleGrantedAuthority(role.getName().toString()))
                 .toList();
         return new User(user.getLogin(),user.getPassword(),authorities);
     }

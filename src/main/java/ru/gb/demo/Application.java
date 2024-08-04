@@ -21,20 +21,20 @@ import java.util.Set;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class Application {
 	public static void main(String[] args) {
-//		ConfigurableApplicationContext context =
+		ConfigurableApplicationContext context =
 				SpringApplication.run(Application.class, args);
-//		UserController controller = context.getBean(UserController.class);
-//		System.out.println(controller.getUsers());
+		UserController controller = context.getBean(UserController.class);
+		System.out.println(controller.getUsers());
 //		UserServiceInterface userService = context.getBean(UserService.class);
 //		User admin = userService.findUser("admin");
 //		User reader = userService.findUser("reader");
 //		System.out.println(userService.update(admin));
 //		System.out.println(userService.update(reader));
-//		RoleServiceInterface roleServiceInterface = context.getBean(RoleService.class);
+		RoleServiceInterface roleServiceInterface = context.getBean(RoleService.class);
 //		Role adminRole= roleServiceInterface.findRole("admin").orElse(null);
 //		Role readerRole= roleServiceInterface.findRole("reader").orElse(null);
 //		roleServiceInterface.deleteAll();
-//		System.out.println(roleServiceInterface.findAll());
+		System.out.println(roleServiceInterface.findAll());
 //		Role adminRole= roleServiceInterface.findRole(Roles.ADMIN);
 //		System.out.println(adminRole);
 //		System.out.println("***********************************");

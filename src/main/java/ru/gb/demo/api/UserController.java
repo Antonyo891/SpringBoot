@@ -40,12 +40,12 @@ public class UserController {
 
     @GetMapping(path = "/users")
     @ResponseBody
-    public ResponseEntity<User> getUsers(){
+    public ResponseEntity<List<User>> getUsers(){
         log.info(" Получен запрос пользователей");
         List<User> users = userService.getUsers();
         log.info("Пользователи :{}", users);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(users.get(0));
+                .body(users);
     }
 
 //    @DeleteMapping(path = "/delete/{bookId}")
