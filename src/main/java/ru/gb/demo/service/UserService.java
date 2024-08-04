@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.demo.model.User;
 import ru.gb.demo.repository.UserRepository;
+import ru.gb.demo.security.LibrariesUsersPasswordEncoder;
+
 import java.util.List;
 
 @Service
@@ -16,6 +18,8 @@ import java.util.List;
 public class UserService implements UserServiceInterface {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LibrariesUsersPasswordEncoder librariesUsersPasswordEncoder;
     @Override
     @Transactional
     public User findUser(String usersLogin) throws UsernameNotFoundException{
@@ -26,6 +30,8 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public User addUser(User user) {
+        String password = librariesUsersPasswordEncoder.encode(user.getPassword());
+        user.setPassword(password);
         userRepository.save(user);
         return userRepository.findById(user.getId()).orElse(null);
     }
@@ -35,7 +41,7 @@ public class UserService implements UserServiceInterface {
     public User update(User user) {
         User updateUser = userRepository.findById(user.getId()).orElse(null);
         assert updateUser != null;
-        updateUser.setPassword(user.getPassword());
+        updateUser.setPassword(librariesUsersPasswordEncoder.encode(user.getPassword()));
         updateUser.setRoles(user.getRoles());
         updateUser.setLogin(user.getLogin());
         userRepository.save(updateUser);
